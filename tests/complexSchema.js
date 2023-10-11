@@ -157,6 +157,7 @@ export const nodes = {
 const emDOM = ['em', 0]
 const strongDOM = ['strong', 0]
 const codeDOM = ['code', 0]
+const snippetHighlightDOM = ['mark', 0]
 
 // :: Object [Specs](#model.MarkSpec) for the marks in the schema.
 export const marks = {
@@ -223,6 +224,18 @@ export const marks = {
       return codeDOM
     }
   },
+
+  'snippet-highlight': {
+    attrs: {
+      snippetUid: { default: null }
+    },
+    exclude: '',
+    parseDOM: [{ tag: 'mark' }],
+    toDOM () {
+      return snippetHighlightDOM
+    }
+  },
+
   ychange: {
     attrs: {
       user: { default: null },

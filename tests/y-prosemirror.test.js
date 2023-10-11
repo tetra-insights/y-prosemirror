@@ -508,3 +508,32 @@ export const testRepeatGenerateProsemirrorChanges300 = tc => {
   checkResult(applyRandomTests(tc, pmChanges, 300, createNewProsemirrorView))
 }
 */
+
+/**
+ * @param {t.TestCase} tc
+ */
+export const testDuplicateMarks = tc => {
+  const ydoc = new Y.Doc()
+  const type = ydoc.getXmlFragment('prosemirror')
+  const view = createNewComplexProsemirrorView(ydoc)
+  t.assert(type.toString() === '', 'should only sync after first change')
+
+  const marks = [
+    complexSchema.mark('snippet-highlight', { snippetUid: '0' }),
+    complexSchema.mark('snippet-highlight', { snippetUid: '1' })
+  ]
+
+  view.dispatch(view.state.tr.insert(view.state.doc.content.size - 1, /** @type {any} */ complexSchema.text('hello world', marks)))
+
+  const stateJSON = view.state.doc.toJSON()
+
+  const backandforth = yDocToProsemirrorJSON(
+    prosemirrorJSONToYDoc(/** @type {any} */ (complexSchema), stateJSON)
+  )
+
+  delete stateJSON.content[1].attrs
+
+  t.compare(JSON.parse(JSON.stringify(stateJSON)), JSON.parse(JSON.stringify(backandforth)))
+
+  t.compareStrings(type.toString(), '<custom checked="false"></custom><paragraph><snippet-highlight-0 snippetUid="0"><snippet-highlight-1 snippetUid="1">hello world</snippet-highlight-1></snippet-highlight-0></paragraph>')
+}

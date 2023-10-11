@@ -709,7 +709,7 @@ const createTextNodesFromYText = (
       const delta = deltas[i]
       const marks = []
       for (const markName in delta.attributes) {
-        marks.push(schema.mark(markName, delta.attributes[markName]))
+        marks.push(schema.mark(markName.startsWith('snippet-highlight-') ? 'snippet-highlight' : markName, delta.attributes[markName]))
       }
       nodes.push(schema.text(delta.insert, marks))
     }
@@ -959,7 +959,12 @@ const marksToAttributes = (marks) => {
   const pattrs = {}
   marks.forEach((mark) => {
     if (mark.type.name !== 'ychange') {
-      pattrs[mark.type.name] = mark.attrs
+      const isSnippetHighlight = mark.type.name === 'snippet-highlight' && typeof mark.attrs?.snippetUid === 'string'
+      if (isSnippetHighlight) {
+        pattrs[mark.type.name + '-' + mark.attrs.snippetUid] = mark.attrs
+      } else {
+        pattrs[mark.type.name] = mark.attrs
+      }
     }
   })
   return pattrs
