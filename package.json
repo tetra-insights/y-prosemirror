@@ -19,6 +19,7 @@
     "watch": "rollup -wc",
     "debug": "concurrently '0serve -o test.html' 'npm run watch'",
     "preversion": "npm run lint && npm run dist && npm run test",
+    "prepare": "npm run dist",
     "start": "concurrently '0serve -o demo/prosemirror.html' 'npm run watch'"
   },
   "exports": {
