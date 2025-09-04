@@ -1108,7 +1108,7 @@ export const attributesToMarks = (attrs, schema) => {
    */
   const marks = []
   for (const markName in attrs) {
-    if(markName.startsWith('snippet-highlight-')){
+    if (markName.startsWith('snippet-highlight-')) {
       marks.push(schema.mark('snippet-highlight'), attrs[markName])
     } else {
       // remove hashes if necessary
