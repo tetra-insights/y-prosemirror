@@ -15,7 +15,7 @@
     "clean": "rm -rf dist",
     "dist": "npm run clean && rollup -c && tsc",
     "test": "npm run lint && rollup -c && node dist/test.cjs",
-    "lint": "standard && tsc",
+    "lint": "standard --fix && tsc",
     "watch": "rollup -wc",
     "debug": "concurrently '0serve -o test.html' 'npm run watch'",
     "preversion": "npm run lint && npm run dist && npm run test",
