@@ -1109,7 +1109,7 @@ export const attributesToMarks = (attrs, schema) => {
   const marks = []
   for (const markName in attrs) {
     if (markName.startsWith('snippet-highlight-')) {
-      marks.push(schema.mark('snippet-highlight'), attrs[markName])
+      marks.push(schema.mark('snippet-highlight', attrs[markName]))
     } else {
       // remove hashes if necessary
       marks.push(schema.mark(yattr2markname(markName), attrs[markName]))
